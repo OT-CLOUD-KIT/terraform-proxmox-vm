@@ -89,11 +89,12 @@ variable "storage" {
 }
 
 variable "tags" {
-  description = "List of tags to assign (1 to 5)"
-  type        = list(string)
-  default     = ["dummy;dev"]
+  description = "List of Tags 1 to 5"
+  type        = string
+  default     = "dummy;prod"
   validation {
-    condition     = length(var.tags) > 0 && length(var.tags) <= 5
-    error_message = "You must provide between 1 and 5 tags."
+    condition     = can(regex("^[a-zA-Z0-9;-]+$", var.tags))
+    error_message = "Tags must be a string like 'dummy;prod' using valid characters."
   }
 }
+
