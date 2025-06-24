@@ -37,5 +37,5 @@ resource "proxmox_vm_qemu" "proxmox_vm" {
     firewall = true
     bridge   = "vmbr0"
   }
-  tags = join(",", var.tags)
+  tags = var.tags
 }
