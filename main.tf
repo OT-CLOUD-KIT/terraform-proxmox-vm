@@ -19,7 +19,7 @@ resource "proxmox_vm_qemu" "proxmox_vm" {
     cores = var.cpu_core
   }
   memory = var.memory_size
-  clone  = var.template
+  clone  = var.ami
   scsihw = var.scsi_hw
   disks {
     scsi {
