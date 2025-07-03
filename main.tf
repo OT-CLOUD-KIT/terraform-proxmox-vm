@@ -12,30 +12,37 @@ provider "proxmox" {
 }
 
 resource "proxmox_vm_qemu" "proxmox_vm" {
-  name        = var.name
-  target_node = var.target_node
-  vmid        = var.vm_id
+  for_each = var.vm_map
+
+  name        = each.value.name
+  target_node = each.value.target_node
+  vmid        = each.value.vm_id
+
   cpu {
-    cores = var.cpu_core
+    cores = each.value.cpu_core
   }
-  memory = var.memory_size
-  clone  = var.ami
-  scsihw = var.scsi_hw
+
+  memory = each.value.memory_size
+  clone  = each.value.ami
+  scsihw = each.value.scsi_hw
+
   disks {
     scsi {
       scsi0 {
         disk {
-          size    = var.disk_size
-          storage = var.storage
+          size    = each.value.disk_size
+          storage = each.value.storage
         }
       }
     }
   }
+
   network {
     id       = 0
     model    = "virtio"
     firewall = true
     bridge   = "vmbr0"
   }
-  tags = var.tags
+
+  tags = each.value.tags
 }
