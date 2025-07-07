@@ -1,6 +1,6 @@
 output "id" {
   description = "ID of the proxmox VM"
-  value       = proxmox_vm_qemu.proxmox_vm.id
+  value       = proxmox_vm_qemu.proxmox_vm.vmid
 }
 
 output "vm_state" {
