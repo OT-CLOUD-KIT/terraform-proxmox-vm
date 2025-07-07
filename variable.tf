@@ -1,13 +1,55 @@
-variable "name" {
-  description = "Name of the VM"
+variable "environment" {
+  description = "Environment (e.g., dev, prod)"
   type        = string
-  default     = "default-vm"
+  default     = "dev"
   validation {
-    condition     = trim(var.name, "") != ""
-    error_message = "VM name must not be empty or just whitespace."
+    condition     = length(trim(var.environment, " ")) > 0
+    error_message = "environment must not be empty."
   }
 }
 
+variable "location" {
+  description = "Location (e.g., delhi)"
+  type        = string
+  default     = "delhi"
+  validation {
+    condition     = length(trim(var.location, " ")) > 0
+    error_message = "location must not be empty."
+  }
+}
+
+variable "role" {
+  description = "Role (e.g., web, db)"
+  type        = string
+  default     = "web"
+  validation {
+    condition     = length(trim(var.role, " ")) > 0
+    error_message = "role must not be empty."
+  }
+}
+
+variable "application" {
+  description = "Application (e.g., checkout)"
+  type        = string
+  default     = "checkout"
+  validation {
+    condition     = length(trim(var.application, " ")) > 0
+    error_message = "application must not be empty."
+  }
+}
+
+variable "vertical" {
+  description = "Business vertical (e.g., retail)"
+  type        = string
+  default     = "retail"
+  validation {
+    condition     = length(trim(var.vertical, " ")) > 0
+    error_message = "vertical must not be empty."
+  }
+}
+
+
+# Other infrastructure variables (unchanged)
 variable "target_node" {
   description = "Target Proxmox node"
   type        = string
@@ -44,17 +86,17 @@ variable "memory_size" {
   default     = 2048
   validation {
     condition     = var.memory_size >= 1024 && var.memory_size <= 16384
-    error_message = "memory_size must be between 1024 (1 GiB) MiB and 16 GiB (16384 MB)."
+    error_message = "memory_size must be between 1024 and 16384 MB."
   }
 }
 
 variable "ami" {
-  description = "AMI"
+  description = "Template to clone from"
   type        = string
   default     = "Ubuntu-24"
   validation {
     condition     = contains(["Ubuntu-24", "centos-9", "Ubuntu20", "ubuntu-22.04"], var.ami)
-    error_message = "AMI must be one of the following: ubuntu-24, centos-9."
+    error_message = "AMI must be one of: Ubuntu-24, centos-9, Ubuntu20, ubuntu-22.04."
   }
 }
 
@@ -79,7 +121,7 @@ variable "disk_size" {
 }
 
 variable "storage" {
-  description = "Storage type"
+  description = "Storage pool name"
   type        = string
   default     = "local"
   validation {
@@ -89,12 +131,11 @@ variable "storage" {
 }
 
 variable "tags" {
-  description = "List of Tags 1 to 5"
+  description = "Tags (e.g., 'web;prod')"
   type        = string
-  default     = "dummy;prod"
+  default     = "web;prod"
   validation {
     condition     = can(regex("^[a-zA-Z0-9;-]+$", var.tags))
-    error_message = "Tags must be a string like 'dummy;prod' using valid characters."
+    error_message = "Tags must use valid characters (letters, numbers, dashes, semicolons)."
   }
 }
-
