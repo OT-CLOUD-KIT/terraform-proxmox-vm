@@ -48,8 +48,50 @@ variable "vertical" {
   }
 }
 
+variable "owner" {
+  description = "Owner of the VM (e.g., mohit.saini)"
+  type        = string
+  default     = "mohit.saini"
+  validation {
+    condition     = length(trim(var.owner, " ")) > 0
+    error_message = "owner must not be empty."
+  }
+}
 
-# Other infrastructure variables (unchanged)
+variable "availability" {
+  description = "Availability type (e.g., HA, standard)"
+  type        = string
+  default     = "standard"
+  validation {
+    condition     = contains(["standard", "HA"], var.availability)
+    error_message = "availability must be either 'standard' or 'HA'."
+  }
+}
+
+variable "lifetime" {
+  description = "VM lifetime (e.g., short, long, permanent)"
+  type        = string
+  default     = "long"
+  validation {
+    condition     = contains(["short", "long", "permanent"], var.lifetime)
+    error_message = "lifetime must be one of: short, long, permanent."
+  }
+}
+
+variable "operating_system" {
+  description = "Operating system (e.g., ubuntu-24.04)"
+  type        = string
+  default     = "ubuntu-24.04"
+  validation {
+    condition     = length(trim(var.operating_system, " ")) > 0
+    error_message = "operating_system must not be empty."
+  }
+}
+
+# ========================
+# VM Provisioning Settings
+# ========================
+
 variable "target_node" {
   description = "Target Proxmox node"
   type        = string
@@ -96,7 +138,7 @@ variable "ami" {
   default     = "Ubuntu-24"
   validation {
     condition     = contains(["Ubuntu-24", "centos-9", "Ubuntu20", "ubuntu-22.04"], var.ami)
-    error_message = "AMI must be one of: Ubuntu-24, centos-9, Ubuntu20, ubuntu-22.04."
+    error_message = "ami must be one of: Ubuntu-24, centos-9, Ubuntu20, ubuntu-22.04."
   }
 }
 
@@ -129,13 +171,8 @@ variable "storage" {
     error_message = "storage must not be empty."
   }
 }
-
 variable "tags" {
-  description = "Tags (e.g., 'web;prod')"
+  description = "Semicolon-separated tags (e.g., dev;delhi;web;checkout;retail)"
   type        = string
-  default     = "web;prod"
-  validation {
-    condition     = can(regex("^[a-zA-Z0-9;-]+$", var.tags))
-    error_message = "Tags must use valid characters (letters, numbers, dashes, semicolons)."
-  }
+  default     = "dev;delhi;web;checkout;retail;mohit.saini;standard;long;ubuntu-24.04"
 }
