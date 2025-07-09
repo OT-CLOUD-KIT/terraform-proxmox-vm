@@ -10,22 +10,24 @@ terraform {
 provider "proxmox" {
   pm_tls_insecure = true
 }
-
-
 locals {
   vm_name = "${var.environment}-${var.location}-${var.role}-${var.application}-${var.vertical}"
+
 }
 
 resource "proxmox_vm_qemu" "proxmox_vm" {
   name        = local.vm_name
   target_node = var.target_node
   vmid        = var.vm_id
+
   cpu {
     cores = var.cpu_core
   }
+
   memory = var.memory_size
   clone  = var.ami
   scsihw = var.scsi_hw
+
   disks {
     scsi {
       scsi0 {
@@ -36,11 +38,14 @@ resource "proxmox_vm_qemu" "proxmox_vm" {
       }
     }
   }
+
   network {
     id       = 0
     model    = "virtio"
     firewall = true
     bridge   = "vmbr0"
   }
-  tags = var.tags
+
+  tags = "${var.environment};${var.location};${var.role};${var.application};${var.vertical};${var.owner};${var.availability};${var.lifetime};${var.operating_system}"
+
 }
