@@ -1,20 +1,3 @@
-terraform {
-  required_providers {
-    proxmox = {
-      source  = "Telmate/proxmox"
-      version = "3.0.2-rc01"
-    }
-  }
-}
-
-provider "proxmox" {
-  pm_tls_insecure = true
-}
-locals {
-  vm_name = "${var.environment}-${var.location}-${var.role}-${var.application}-${var.vertical}"
-
-}
-
 resource "proxmox_vm_qemu" "proxmox_vm" {
   name        = local.vm_name
   target_node = var.target_node
@@ -46,6 +29,6 @@ resource "proxmox_vm_qemu" "proxmox_vm" {
     bridge   = "vmbr0"
   }
 
-  tags = "${var.environment};${var.location};${var.role};${var.application};${var.vertical};${var.owner};${var.availability};${var.lifetime};${var.operating_system}"
+  tags = "${var.environment};${var.location};${var.role};${var.identifier};${var.vertical};${var.owner};${var.availability};${var.lifetime};${var.operating_system}"
 
 }
