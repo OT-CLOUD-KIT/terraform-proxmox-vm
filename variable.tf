@@ -40,9 +40,10 @@ variable "identifier" {
       ["build-agent", "control-plane", "deploy-agent", "docs", "ems", "incident", "jenkins", "sonarqube", "k8s", "openops", "orchestrator", "tunneliq", "uniteconpro"],
       var.identifier
     )
-    error_message = "Invalid identifier. Allowed values are: build-agent,sonarqube, control-plane, deploy-agent, docs, ems, incident, jenkins, k8s, openops, orchestrator, tunneliq, uniteconpro."
+    error_message = "Invalid identifier. Allowed values are: build-agent, sonarqube, control-plane, deploy-agent, docs, ems, incident, jenkins, k8s, openops, orchestrator, tunneliq, uniteconpro."
   }
 }
+
 
 variable "vertical" {
   description = "Business vertical (allowed: bp, coe, common, cost, olly, rapple, snaatak)"
