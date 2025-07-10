@@ -11,7 +11,7 @@ variable "environment" {
 variable "location" {
   description = "Location (must be one of: hercules, ashwathama, hanuman)"
   type        = string
-  default     = "hercules"
+  default     = "ashwathama"
   validation {
     condition     = contains(["hercules", "ashwathama", "hanuman"], var.location)
     error_message = "Invalid location. Allowed values are: hercules, ashwathama, hanuman."
@@ -19,12 +19,15 @@ variable "location" {
 }
 
 variable "role" {
-  description = "Role (e.g., web, db)"
+  description = "Role of the VM (allowed: app, db, middleware)"
   type        = string
-  default     = "web"
+  default     = "app"
   validation {
-    condition     = length(trim(var.role, " ")) > 0
-    error_message = "role must not be empty."
+    condition = contains(
+      ["app", "db", "middleware"],
+      var.role
+    )
+    error_message = "Invalid role. Allowed values are: app, db, middleware."
   }
 }
 
@@ -41,11 +44,10 @@ variable "identifier" {
   }
 }
 
-
 variable "vertical" {
   description = "Business vertical (allowed: bp, coe, common, cost, olly, rapple, snaatak)"
   type        = string
-  default     = "retail"
+  default     = "coe"
   validation {
     condition = contains(
       ["bp", "coe", "common", "cost", "olly", "rapple", "snaatak"],
@@ -56,15 +58,14 @@ variable "vertical" {
 }
 
 variable "owner" {
-  description = "Owner of the VM (must be a valid email ending with .com)"
+  description = "Sanitized owner name (e.g., mail-opstree-com). Only letters, numbers, hyphens, and underscores are allowed. No '@' or '.'"
   type        = string
-  default     = "mail@opstree.com"
+  default     = "mail-opstree-com"
   validation {
-    condition     = can(regex("^\\S+@\\S+\\.com$", var.owner))
-    error_message = "Invalid owner. Must be a valid email address ending with .com (e.g., user@example.com)."
+    condition     = can(regex("^[a-zA-Z0-9_-]+$", var.owner))
+    error_message = "Invalid owner. Use only letters, numbers, hyphens, or underscores (e.g., mail-opstree-com). No '@' or '.' allowed."
   }
 }
-
 
 variable "availability" {
   description = "Availability type (e.g., HA, standard)"
@@ -176,7 +177,7 @@ variable "storage" {
   }
 }
 variable "tags" {
-  description = "Semicolon-separated tags (e.g., dev;delhi;web;checkout;retail)"
+  description = "Semicolon-separated tags (e.g., dev;ashwathama;app;uniteconpro;coe;mail@opstree.com;standard;30;ubuntu-24)"
   type        = string
-  default     = "dev;delhi;web;checkout;retail;mohit.saini;standard;long;ubuntu-24.04"
+  default     = "dev;ashwathama;app;uniteconpro;coe;mail-opstree-com;standard;30;ubuntu-24"
 }
