@@ -1,10 +1,99 @@
-variable "name" {
-  description = "Name of the VM"
+variable "environment" {
+  description = "Environment (must be one of: dev, qa, prod)"
   type        = string
-  default     = "default-vm"
+  default     = "dev"
   validation {
-    condition     = trim(var.name, "") != ""
-    error_message = "VM name must not be empty or just whitespace."
+    condition     = contains(["dev", "qa", "prod"], var.environment)
+    error_message = "Invalid environment. Allowed values are: dev, qa, prod."
+  }
+}
+
+variable "location" {
+  description = "Location (must be one of: hercules, ashwathama, hanuman)"
+  type        = string
+  default     = "ashwathama"
+  validation {
+    condition     = contains(["hercules", "ashwathama", "hanuman"], var.location)
+    error_message = "Invalid location. Allowed values are: hercules, ashwathama, hanuman."
+  }
+}
+
+variable "role" {
+  description = "Role of the VM (allowed: app, db, middleware)"
+  type        = string
+  default     = "app"
+  validation {
+    condition = contains(
+      ["app", "db", "middleware"],
+      var.role
+    )
+    error_message = "Invalid role. Allowed values are: app, db, middleware."
+  }
+}
+
+variable "identifier" {
+  description = "Application identifier (allowed: build-agent, control-plane, deploy-agent, docs, ems, incident, jenkins, k8s, openops, orchestrator, tunneliq, uniteconpro)"
+  type        = string
+  default     = "uniteconpro"
+  validation {
+    condition = contains(
+      ["build-agent", "control-plane", "deploy-agent", "docs", "ems", "incident", "jenkins", "k8s", "openops", "orchestrator", "tunneliq", "uniteconpro"],
+      var.identifier
+    )
+    error_message = "Invalid identifier. Allowed values are: build-agent, control-plane, deploy-agent, docs, ems, incident, jenkins, k8s, openops, orchestrator, tunneliq, uniteconpro."
+  }
+}
+
+variable "vertical" {
+  description = "Business vertical (allowed: bp, coe, common, cost, olly, rapple, snaatak)"
+  type        = string
+  default     = "coe"
+  validation {
+    condition = contains(
+      ["bp", "coe", "common", "cost", "olly", "rapple", "snaatak"],
+      var.vertical
+    )
+    error_message = "Invalid vertical. Allowed values are: bp, coe, common, cost, olly, rapple, snaatak."
+  }
+}
+
+variable "owner" {
+  description = "Sanitized owner name (e.g., mail-opstree-com). Only letters, numbers, hyphens, and underscores are allowed. No '@' or '.'"
+  type        = string
+  default     = "mail-opstree-com"
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_-]+$", var.owner))
+    error_message = "Invalid owner. Use only letters, numbers, hyphens, or underscores (e.g., mail-opstree-com). No '@' or '.' allowed."
+  }
+}
+
+variable "availability" {
+  description = "Availability type (e.g., HA, standard)"
+  type        = string
+  default     = "standard"
+  validation {
+    condition     = contains(["standard", "HA"], var.availability)
+    error_message = "availability must be either 'standard' or 'HA'."
+  }
+}
+
+variable "lifetime" {
+  description = "VM lifetime in days (e.g., 10, 30, 365). Use 0 for permanent."
+  type        = number
+  default     = 30
+  validation {
+    condition     = var.lifetime >= 0
+    error_message = "lifetime must be a non-negative number. Use 0 for permanent."
+  }
+}
+
+variable "operating_system" {
+  description = "Operating system (e.g., ubuntu-24.04)"
+  type        = string
+  default     = "ubuntu-24"
+  validation {
+    condition     = length(trim(var.operating_system, " ")) > 0
+    error_message = "operating_system must not be empty."
   }
 }
 
@@ -21,7 +110,7 @@ variable "target_node" {
 variable "vm_id" {
   description = "VM ID"
   type        = number
-  default     = 101
+  default     = 301
   validation {
     condition     = var.vm_id > 100 && var.vm_id < 9999
     error_message = "vm_id must be between 101 and 9998."
@@ -44,14 +133,14 @@ variable "memory_size" {
   default     = 2048
   validation {
     condition     = var.memory_size >= 1024 && var.memory_size <= 16384
-    error_message = "memory_size must be between 1024 (1 GiB) MiB and 16 GiB (16384 MB)."
+    error_message = "memory_size must be between 1024 and 16384 MB."
   }
 }
 
 variable "ami" {
-  description = "AMI"
+  description = "Template to clone from"
   type        = string
-  default     = "Ubuntu-24"
+  default     = "ubuntu-24"
   validation {
     condition     = contains(["ubuntu-24", "centos-9", "Ubuntu20", "ubuntu-22.04"], var.ami)
     error_message = "AMI must be one of the following: ubuntu-24, centos-9."
@@ -79,7 +168,7 @@ variable "disk_size" {
 }
 
 variable "storage" {
-  description = "Storage type"
+  description = "Storage pool name"
   type        = string
   default     = "local"
   validation {
@@ -87,14 +176,8 @@ variable "storage" {
     error_message = "storage must not be empty."
   }
 }
-
 variable "tags" {
-  description = "List of Tags 1 to 5"
+  description = "Semicolon-separated tags (e.g., dev;ashwathama;app;uniteconpro;coe;mail@opstree.com;standard;30;ubuntu-24)"
   type        = string
-  default     = "dummy;prod"
-  validation {
-    condition     = can(regex("^[a-zA-Z0-9;-]+$", var.tags))
-    error_message = "Tags must be a string like 'dummy;prod' using valid characters."
-  }
+  default     = "dev;ashwathama;app;uniteconpro;coe;mail-opstree-com;standard;30;ubuntu-24"
 }
-
