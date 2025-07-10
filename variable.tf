@@ -1,20 +1,20 @@
 variable "environment" {
-  description = "Environment (e.g., dev, prod)"
+  description = "Environment (must be one of: dev, qa, prod)"
   type        = string
   default     = "dev"
   validation {
-    condition     = length(trim(var.environment, " ")) > 0
-    error_message = "environment must not be empty."
+    condition     = contains(["dev", "qa", "prod"], var.environment)
+    error_message = "Invalid environment. Allowed values are: dev, qa, prod."
   }
 }
 
 variable "location" {
-  description = "Location (e.g., delhi)"
+  description = "Location (must be one of: hercules, ashwathama, hanuman)"
   type        = string
-  default     = "delhi"
+  default     = "hercules"
   validation {
-    condition     = length(trim(var.location, " ")) > 0
-    error_message = "location must not be empty."
+    condition     = contains(["hercules", "ashwathama", "hanuman"], var.location)
+    error_message = "Invalid location. Allowed values are: hercules, ashwathama, hanuman."
   }
 }
 
@@ -28,35 +28,43 @@ variable "role" {
   }
 }
 
-variable "application" {
-  description = "Application (e.g., checkout)"
+variable "identifier" {
+  description = "Application identifier (allowed: build-agent, control-plane, deploy-agent, docs, ems, incident, jenkins, k8s, openops, orchestrator, tunneliq, uniteconpro)"
   type        = string
-  default     = "checkout"
+  default     = "uniteconpro"
   validation {
-    condition     = length(trim(var.application, " ")) > 0
-    error_message = "application must not be empty."
+    condition = contains(
+      ["build-agent", "control-plane", "deploy-agent", "docs", "ems", "incident", "jenkins", "k8s", "openops", "orchestrator", "tunneliq", "uniteconpro"],
+      var.identifier
+    )
+    error_message = "Invalid identifier. Allowed values are: build-agent, control-plane, deploy-agent, docs, ems, incident, jenkins, k8s, openops, orchestrator, tunneliq, uniteconpro."
   }
 }
 
+
 variable "vertical" {
-  description = "Business vertical (e.g., retail)"
+  description = "Business vertical (allowed: bp, coe, common, cost, olly, rapple, snaatak)"
   type        = string
   default     = "retail"
   validation {
-    condition     = length(trim(var.vertical, " ")) > 0
-    error_message = "vertical must not be empty."
+    condition = contains(
+      ["bp", "coe", "common", "cost", "olly", "rapple", "snaatak"],
+      var.vertical
+    )
+    error_message = "Invalid vertical. Allowed values are: bp, coe, common, cost, olly, rapple, snaatak."
   }
 }
 
 variable "owner" {
-  description = "Owner of the VM (e.g., mohit.saini)"
+  description = "Owner of the VM (must be a valid email ending with .com)"
   type        = string
-  default     = "mohit.saini"
+  default     = "mail@opstree.com"
   validation {
-    condition     = length(trim(var.owner, " ")) > 0
-    error_message = "owner must not be empty."
+    condition     = can(regex("^\\S+@\\S+\\.com$", var.owner))
+    error_message = "Invalid owner. Must be a valid email address ending with .com (e.g., user@example.com)."
   }
 }
+
 
 variable "availability" {
   description = "Availability type (e.g., HA, standard)"
@@ -69,28 +77,24 @@ variable "availability" {
 }
 
 variable "lifetime" {
-  description = "VM lifetime (e.g., short, long, permanent)"
-  type        = string
-  default     = "long"
+  description = "VM lifetime in days (e.g., 10, 30, 365). Use 0 for permanent."
+  type        = number
+  default     = 30
   validation {
-    condition     = contains(["short", "long", "permanent"], var.lifetime)
-    error_message = "lifetime must be one of: short, long, permanent."
+    condition     = var.lifetime >= 0
+    error_message = "lifetime must be a non-negative number. Use 0 for permanent."
   }
 }
 
 variable "operating_system" {
   description = "Operating system (e.g., ubuntu-24.04)"
   type        = string
-  default     = "ubuntu-24.04"
+  default     = "ubuntu-24"
   validation {
     condition     = length(trim(var.operating_system, " ")) > 0
     error_message = "operating_system must not be empty."
   }
 }
-
-# ========================
-# VM Provisioning Settings
-# ========================
 
 variable "target_node" {
   description = "Target Proxmox node"
@@ -105,7 +109,7 @@ variable "target_node" {
 variable "vm_id" {
   description = "VM ID"
   type        = number
-  default     = 101
+  default     = 301
   validation {
     condition     = var.vm_id > 100 && var.vm_id < 9999
     error_message = "vm_id must be between 101 and 9998."
@@ -135,9 +139,9 @@ variable "memory_size" {
 variable "ami" {
   description = "Template to clone from"
   type        = string
-  default     = "Ubuntu-24"
+  default     = "ubuntu-24"
   validation {
-    condition     = contains(["Ubuntu-24", "centos-9", "Ubuntu20", "ubuntu-22.04"], var.ami)
+    condition     = contains(["ubuntu-24", "centos-9", "ubuntu20", "ubuntu-22.04"], var.ami)
     error_message = "ami must be one of: Ubuntu-24, centos-9, Ubuntu20, ubuntu-22.04."
   }
 }
