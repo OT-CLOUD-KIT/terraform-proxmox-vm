@@ -53,7 +53,7 @@ variable "ami" {
   type        = string
   default     = "Ubuntu-24"
   validation {
-    condition     = contains(["Ubuntu-24", "centos-9", "Ubuntu20", "ubuntu-22.04"], var.ami)
+    condition     = contains(["ubuntu-24", "centos-9", "Ubuntu20", "ubuntu-22.04"], var.ami)
     error_message = "AMI must be one of the following: ubuntu-24, centos-9."
   }
 }
