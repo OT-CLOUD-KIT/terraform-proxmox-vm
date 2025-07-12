@@ -24,10 +24,10 @@ variable "role" {
   default     = "app"
   validation {
     condition = contains(
-      ["app", "db", "middleware"],
+      ["app", "db", "mw"],
       var.role
     )
-    error_message = "Invalid role. Allowed values are: app, db, middleware."
+    error_message = "Invalid role. Allowed values are: app, db, mw."
   }
 }
 
