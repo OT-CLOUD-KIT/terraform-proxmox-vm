@@ -34,6 +34,7 @@ variable "role" {
 variable "identifier" {
   description = "Application identifier (allowed: build-agent, control-plane, deploy-agent, docs, ems, incident, jenkins, sonarqube, k8s, openops, orchestrator, tunneliq, uniteconpro)"
   type        = string
+  default     = "uniteconpro"
 }
 
 variable "vertical" {
