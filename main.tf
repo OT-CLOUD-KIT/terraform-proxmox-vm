@@ -10,6 +10,8 @@ resource "proxmox_vm_qemu" "proxmox_vm" {
   memory = var.memory_size
   clone  = var.ami
   scsihw = var.scsi_hw
+  onboot = true
+  agent = 1
 
   disks {
     scsi {
@@ -29,6 +31,5 @@ resource "proxmox_vm_qemu" "proxmox_vm" {
     bridge   = "vmbr0"
   }
 
-  tags = "${var.environment};${var.location};${var.role};${var.identifier};${var.vertical};${var.owner};${var.availability};${var.lifetime};${var.operating_system}-"
-
+  tags = "${var.environment};${var.location};${var.role};${var.identifier};${var.vertical};${var.owner};${var.availability};${var.lifetime};${var.operating_system};${var.extra_tags}"
 }
