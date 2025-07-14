@@ -34,6 +34,7 @@ variable "role" {
 variable "identifier" {
   description = "Application identifier (allowed: build-agent, control-plane, deploy-agent, docs, ems, incident, jenkins, sonarqube, k8s, openops, orchestrator, tunneliq, uniteconpro)"
   type        = string
+  default     = "uniteconpro"
 }
 
 variable "vertical" {
@@ -173,10 +174,4 @@ variable "tags" {
   description = "Semicolon-separated tags (e.g., dev;ashwathama;app;uniteconpro;coe;mail@opstree.com;standard;30;ubuntu-24)"
   type        = string
   default     = "dev;ashwathama;app;uniteconpro;coe;mail-opstree-com;standard;30;ubuntu-24"
-}
-
-variable "extra_tags" {
-  description = "Extra tags to append (semicolon-separated)"
-  type        = string
-  default     = "demo"  
 }
