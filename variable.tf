@@ -178,5 +178,5 @@ variable "tags" {
 variable "extra_tags" {
   description = "Extra tags to append (semicolon-separated)"
   type        = string
-  default     = ""  
+  default     = "demo"  
 }
