@@ -12,10 +12,6 @@ resource "proxmox_vm_qemu" "proxmox_vm" {
   scsihw = var.scsi_hw
   onboot = true
 
-  agent {
-    enabled   = true
-    skip_ipv6 = true
-  }
 
   disks {
     scsi {
@@ -35,5 +31,5 @@ resource "proxmox_vm_qemu" "proxmox_vm" {
     bridge   = "vmbr0"
   }
 
-  tags = local.all_tags
+  tags = "${var.environment};${var.location};${var.role};${var.identifier};${var.vertical};${var.owner};${var.availability};${var.lifetime};${var.operating_system};${var.extra_tags}"
 }
