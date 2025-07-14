@@ -11,7 +11,6 @@ resource "proxmox_vm_qemu" "proxmox_vm" {
   clone  = var.ami
   scsihw = var.scsi_hw
   onboot = true
-  agent = 1
 
   disks {
     scsi {
