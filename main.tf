@@ -11,7 +11,11 @@ resource "proxmox_vm_qemu" "proxmox_vm" {
   clone  = var.ami
   scsihw = var.scsi_hw
   onboot = true
-  agent = 1
+
+  agent {
+    enabled   = true
+    skip_ipv6 = true
+  }
 
   disks {
     scsi {
@@ -30,5 +34,6 @@ resource "proxmox_vm_qemu" "proxmox_vm" {
     firewall = true
     bridge   = "vmbr0"
   }
-tags = local.all_tags 
+
+  tags = local.all_tags
 }
