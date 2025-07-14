@@ -174,3 +174,9 @@ variable "tags" {
   type        = string
   default     = "dev;ashwathama;app;uniteconpro;coe;mail-opstree-com;standard;30;ubuntu-24"
 }
+
+variable "extra_tags" {
+  description = "Extra tags to append (semicolon-separated)"
+  type        = string
+  default     = ""  
+}
