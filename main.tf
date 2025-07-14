@@ -29,6 +29,6 @@ resource "proxmox_vm_qemu" "proxmox_vm" {
     bridge   = "vmbr0"
   }
 
-  tags = "${var.environment};${var.location};${var.role};${var.identifier};${var.vertical};${var.owner};${var.availability};${var.lifetime};${var.operating_system}"
+  tags = "${var.environment};${var.location};${var.role};${var.identifier};${var.vertical};${var.owner};${var.availability};${var.lifetime};${var.operating_system}-"
 
 }
