@@ -12,7 +12,6 @@ resource "proxmox_vm_qemu" "proxmox_vm" {
   scsihw = var.scsi_hw
   onboot = true
 
-
   disks {
     scsi {
       scsi0 {
