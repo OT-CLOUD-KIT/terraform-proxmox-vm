@@ -24,23 +24,16 @@ variable "role" {
   default     = "app"
   validation {
     condition = contains(
-      ["app", "db", "middleware"],
+      ["app", "db", "mw"],
       var.role
     )
-    error_message = "Invalid role. Allowed values are: app, db, middleware."
+    error_message = "Invalid role. Allowed values are: app, db, mw."
   }
 }
 
 variable "identifier" {
   description = "Application identifier (allowed: build-agent, control-plane, deploy-agent, docs, ems, incident, jenkins, sonarqube, k8s, openops, orchestrator, tunneliq, uniteconpro)"
   type        = string
-  validation {
-    condition = contains(
-      ["build-agent", "control-plane", "deploy-agent", "docs", "ems", "incident", "jenkins", "sonarqube", "k8s", "openops", "orchestrator", "tunneliq", "uniteconpro"],
-      var.identifier
-    )
-    error_message = "Invalid identifier. Allowed values are: build-agent, control-plane, deploy-agent, docs, ems, incident, jenkins, sonarqube, k8s, openops, orchestrator, tunneliq, uniteconpro."
-  }
 }
 
 variable "vertical" {
@@ -87,12 +80,13 @@ variable "lifetime" {
 }
 
 variable "operating_system" {
-  description = "Operating system (e.g., ubuntu-24.04)"
+  description = "Operating system (e.g., ubuntu-24, ubuntu-20)"
   type        = string
   default     = "ubuntu-24"
+
   validation {
-    condition     = length(trim(var.operating_system, " ")) > 0
-    error_message = "operating_system must not be empty."
+    condition     = var.operating_system == "ubuntu-24" || var.operating_system == "ubuntu-20"
+    error_message = "operating_system must be either 'ubuntu-24' or 'ubuntu-20'."
   }
 }
 
@@ -141,8 +135,8 @@ variable "ami" {
   type        = string
   default     = "ubuntu-24"
   validation {
-    condition     = contains(["ubuntu-24", "centos-9", "Ubuntu20", "ubuntu-22.04"], var.ami)
-    error_message = "AMI must be one of the following: ubuntu-24, centos-9."
+  condition     = contains(["ubuntu-24", "centos-9", "ubuntu-20", "ubuntu-22.04"], var.ami)
+  error_message = "AMI must be one of the following: ubuntu-24, ubuntu-20, ubuntu-22.04, centos-9."
   }
 }
 
@@ -179,4 +173,10 @@ variable "tags" {
   description = "Semicolon-separated tags (e.g., dev;ashwathama;app;uniteconpro;coe;mail@opstree.com;standard;30;ubuntu-24)"
   type        = string
   default     = "dev;ashwathama;app;uniteconpro;coe;mail-opstree-com;standard;30;ubuntu-24"
+}
+
+variable "extra_tags" {
+  description = "Extra tags to append (semicolon-separated)"
+  type        = string
+  default     = "demo"  
 }
