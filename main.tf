@@ -30,5 +30,5 @@ resource "proxmox_vm_qemu" "proxmox_vm" {
     bridge   = "vmbr0"
   }
 
- tags = local.tags
+  tags = local.tags
 }
