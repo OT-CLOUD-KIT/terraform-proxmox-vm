@@ -150,6 +150,17 @@ variable "scsi_hw" {
     error_message = "scsi_hw must be one of: virtio-scsi-single, lsi, scsi-hw."
   }
 }
+variable "disk_slot" {
+  description = "Disk slot to attach, e.g., 'scsi0'"
+  type        = string
+  default     = "scsi0"
+}
+
+variable "disk_type" {
+  description = "Type of disk device: disk, cdrom, cloudinit, etc."
+  type        = string
+  default     = "disk"
+}
 
 variable "disk_size" {
   description = "Disk size"
@@ -170,8 +181,37 @@ variable "storage" {
     error_message = "storage must not be empty."
   }
 }
+
+variable "disk_format" {
+  description = "Format of the disk, e.g., 'raw' or 'qcow2'"
+  type        = string
+  default     = "qcow2"
+}
+
+variable "disk_iothread" {
+  description = "Enable IO thread for the disk (true/false)"
+  type        = bool
+  default     = true
+}
+
 variable "tags" {
   description = "Semicolon-separated tags (e.g., dev;ashwathama;app;uniteconpro;coe;mail@opstree.com;standard;30;ubuntu-24)"
   type        = string
   default     = "dev;ashwathama;app;uniteconpro;coe;mail-opstree-com;standard;30;ubuntu-24"
+}
+
+variable "extra_tags" {
+  description = "Extra tags to append (semicolon-separated)"
+  type        = string
+  default     = "demo"  
+}
+variable "enable_agent" {
+  type    = number
+  default = 1
+  description = "Enable QEMU guest agent (1 = yes, 0 = no)"
+}
+variable "onboot" {
+  type        = bool
+  default     = true
+  description = "Whether the VM should start automatically on host boot"
 }
