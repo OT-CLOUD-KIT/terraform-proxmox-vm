@@ -19,75 +19,68 @@ variable "location" {
 }
 
 variable "role" {
-  description = "Role of the VM (allowed: app, db, middleware)"
+  description = "Role of the VM (allowed: app, db, mw)"
   type        = string
   default     = "app"
   validation {
-    condition = contains(
-      ["app", "db", "mw"],
-      var.role
-    )
+    condition     = contains(["app", "db", "mw"], var.role)
     error_message = "Invalid role. Allowed values are: app, db, mw."
   }
 }
 
 variable "identifier" {
-  description = "Application identifier (allowed: build-agent, control-plane, deploy-agent, docs, ems, incident, jenkins, sonarqube, k8s, openops, orchestrator, tunneliq, uniteconpro)"
+  description = "Application identifier"
   type        = string
   default     = "uniteconpro"
 }
 
 variable "vertical" {
-  description = "Business vertical (allowed: bp, coe, common, cost, olly, rapple, snaatak)"
+  description = "Business vertical"
   type        = string
   default     = "coe"
   validation {
-    condition = contains(
-      ["bp", "coe", "common", "cost", "olly", "rapple", "snaatak"],
-      var.vertical
-    )
-    error_message = "Invalid vertical. Allowed values are: bp, coe, common, cost, olly, rapple, snaatak."
+    condition     = contains(["bp", "coe", "common", "cost", "olly", "rapple", "snaatak"], var.vertical)
+    error_message = "Invalid vertical."
   }
 }
 
 variable "owner" {
-  description = "Sanitized owner name (e.g., mail-opstree-com). Only letters, numbers, hyphens, and underscores are allowed. No '@' or '.'"
+  description = "Sanitized owner name"
   type        = string
   default     = "mail-opstree-com"
   validation {
     condition     = can(regex("^[a-zA-Z0-9_-]+$", var.owner))
-    error_message = "Invalid owner. Use only letters, numbers, hyphens, or underscores (e.g., mail-opstree-com). No '@' or '.' allowed."
+    error_message = "Invalid owner. Use only letters, numbers, hyphens, or underscores."
   }
 }
 
 variable "availability" {
-  description = "Availability type (e.g., HA, standard)"
+  description = "Availability type"
   type        = string
   default     = "standard"
   validation {
     condition     = contains(["standard", "HA"], var.availability)
-    error_message = "availability must be either 'standard' or 'HA'."
+    error_message = "Availability must be either 'standard' or 'HA'."
   }
 }
 
 variable "lifetime" {
-  description = "VM lifetime in days (e.g., 10, 30, 365). Use 0 for permanent."
+  description = "VM lifetime in days"
   type        = number
   default     = 30
   validation {
     condition     = var.lifetime >= 0
-    error_message = "lifetime must be a non-negative number. Use 0 for permanent."
+    error_message = "Lifetime must be a non-negative number."
   }
 }
 
 variable "operating_system" {
-  description = "Operating system (e.g., ubuntu-24, ubuntu-20)"
+  description = "Operating system"
   type        = string
   default     = "ubuntu-24"
-
   validation {
-    condition     = var.operating_system == "ubuntu-24" || var.operating_system == "ubuntu-20"
-    error_message = "operating_system must be either 'ubuntu-24' or 'ubuntu-20'."
+    condition     = contains(["ubuntu-24", "ubuntu-20"], var.operating_system)
+    error_message = "Operating system must be either 'ubuntu-24' or 'ubuntu-20'."
   }
 }
 
@@ -97,7 +90,7 @@ variable "target_node" {
   default     = "op-srv-01"
   validation {
     condition     = length(var.target_node) > 0
-    error_message = "target_node must not be empty."
+    error_message = "Target node must not be empty."
   }
 }
 
@@ -107,7 +100,7 @@ variable "vm_id" {
   default     = 301
   validation {
     condition     = var.vm_id > 100 && var.vm_id < 9999
-    error_message = "vm_id must be between 101 and 9998."
+    error_message = "VM ID must be between 101 and 9998."
   }
 }
 
@@ -117,7 +110,7 @@ variable "cpu_core" {
   default     = 2
   validation {
     condition     = var.cpu_core >= 1 && var.cpu_core <= 30
-    error_message = "cpu_core must be between 1 and 30."
+    error_message = "CPU cores must be between 1 and 30."
   }
 }
 
@@ -127,7 +120,7 @@ variable "memory_size" {
   default     = 2048
   validation {
     condition     = var.memory_size >= 1024 && var.memory_size <= 16384
-    error_message = "memory_size must be between 1024 and 16384 MB."
+    error_message = "Memory size must be between 1024 and 16384 MB."
   }
 }
 
@@ -136,8 +129,8 @@ variable "ami" {
   type        = string
   default     = "ubuntu-24"
   validation {
-  condition     = contains(["ubuntu-24", "centos-9", "ubuntu-20", "ubuntu-22.04"], var.ami)
-  error_message = "AMI must be one of the following: ubuntu-24, ubuntu-20, ubuntu-22.04, centos-9."
+    condition     = contains(["ubuntu-24", "centos-9", "ubuntu-20", "ubuntu-22.04"], var.ami)
+    error_message = "AMI must be one of: ubuntu-24, ubuntu-20, ubuntu-22.04, centos-9."
   }
 }
 
@@ -147,8 +140,20 @@ variable "scsi_hw" {
   default     = "virtio-scsi-single"
   validation {
     condition     = contains(["virtio-scsi-single", "lsi", "scsi-hw"], var.scsi_hw)
-    error_message = "scsi_hw must be one of: virtio-scsi-single, lsi, scsi-hw."
+    error_message = "SCSI hardware must be one of: virtio-scsi-single, lsi, scsi-hw."
   }
+}
+
+variable "disk_slot" {
+  description = "Disk slot"
+  type        = string
+  default     = "scsi0"
+}
+
+variable "disk_type" {
+  description = "Disk type"
+  type        = string
+  default     = "disk"
 }
 
 variable "disk_size" {
@@ -157,7 +162,7 @@ variable "disk_size" {
   default     = "30G"
   validation {
     condition     = can(regex("^\\d+[GM]$", var.disk_size))
-    error_message = "disk_size must be in the format like '30G' or '1024M'."
+    error_message = "Disk size must be like '30G' or '1024M'."
   }
 }
 
@@ -167,11 +172,86 @@ variable "storage" {
   default     = "local"
   validation {
     condition     = length(var.storage) > 0
-    error_message = "storage must not be empty."
+    error_message = "Storage must not be empty."
   }
 }
+
+variable "disk_format" {
+  description = "Disk format"
+  type        = string
+  default     = "qcow2"
+}
+
+variable "disk_iothread" {
+  description = "Enable IO thread"
+  type        = bool
+  default     = true
+}
+
 variable "tags" {
-  description = "Semicolon-separated tags (e.g., dev;ashwathama;app;uniteconpro;coe;mail@opstree.com;standard;30;ubuntu-24)"
+  description = "Semicolon-separated tags"
   type        = string
   default     = "dev;ashwathama;app;uniteconpro;coe;mail-opstree-com;standard;30;ubuntu-24"
+}
+
+variable "extra_tags" {
+  description = "Extra tags"
+  type        = string
+  default     = "deault-machine"
+}
+
+variable "enable_agent" {
+  description = "Enable QEMU guest agent"
+  type        = number
+  default     = 1
+}
+
+variable "onboot" {
+  description = "Start VM on boot"
+  type        = bool
+  default     = true
+}
+
+variable "full_clone" {
+  description = "Full clone option"
+  type        = bool
+  default     = true
+}
+
+variable "skip_ip" {
+  description = "Skip IPv6 config"
+  type        = bool
+  default     = true
+}
+
+variable "network_id" {
+  description = "Network ID"
+  type        = number
+  default     = 0
+}
+
+variable "network_model" {
+  description = "NIC model"
+  type        = string
+  default     = "virtio"
+  validation {
+    condition     = contains(["virtio", "e1000", "rtl8139"], var.network_model)
+    error_message = "NIC model must be one of: virtio, e1000, rtl8139."
+  }
+}
+
+variable "network_firewall" {
+  description = "Enable firewall"
+  type        = bool
+  default     = true
+}
+
+variable "network_bridge" {
+  description = "NIC bridge"
+  type        = string
+  default     = "vmbr0"
+  validation {
+    condition     = length(var.network_bridge) > 0
+    error_message = "NIC bridge must not be empty."
+  }
 }
