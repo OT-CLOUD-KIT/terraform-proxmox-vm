@@ -3,7 +3,7 @@ resource "proxmox_vm_qemu" "proxmox_vm" {
   target_node = var.target_node
   vmid        = var.vm_id
   clone       = var.ami
-  full_clone  = true
+  full_clone  = var.full_clone
   scsihw      = var.scsi_hw
   onboot      = var.onboot
 
@@ -11,25 +11,24 @@ resource "proxmox_vm_qemu" "proxmox_vm" {
     cores = var.cpu_core
   }
 
-  memory = var.memory_size
+  memory     = var.memory_size
+  agent      = var.enable_agent
+  skip_ipv6  = var.skip_ip
 
-  agent     = var.enable_agent
-  skip_ipv6 = true
-
-disk {
-  slot     = var.disk_slot       
-  type     = var.disk_type       
-  storage  = var.storage         
-  size     = var.disk_size       
-  format   = var.disk_format     
-  iothread = var.disk_iothread   
-}
+  disk {
+    slot     = var.disk_slot
+    type     = var.disk_type
+    storage  = var.storage
+    size     = var.disk_size
+    format   = var.disk_format
+    iothread = var.disk_iothread
+  }
 
   network {
-    id       = 0
-    model    = "virtio"
-    firewall = true
-    bridge   = "vmbr0"
+    id       = var.network_id
+    model    = var.network_model
+    firewall = var.network_firewall
+    bridge   = var.network_bridge
   }
 
   tags = local.tags
