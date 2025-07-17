@@ -47,12 +47,13 @@ variable "vertical" {
 variable "owner" {
   description = "Sanitized owner name"
   type        = string
-  default     = "mail-opstree-com"
+  default     = "mail.opstree.com"
   validation {
-    condition     = can(regex("^[a-zA-Z0-9_-]+$", var.owner))
-    error_message = "Invalid owner. Use only letters, numbers, hyphens, or underscores."
+    condition     = can(regex("^[a-zA-Z0-9._-]+$", var.owner))
+    error_message = "Invalid owner. Use only letters, numbers, hyphens (-), underscores (_), or dots (.)."
   }
 }
+
 
 variable "availability" {
   description = "Availability type"
