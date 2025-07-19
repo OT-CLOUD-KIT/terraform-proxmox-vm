@@ -7,3 +7,8 @@ output "vm_state" {
   description = "State of the proxmox VM"
   value       = proxmox_vm_qemu.proxmox_vm.vm_state
 }
+
+output "vm_ip_address" {
+  description = "IP of the proxmos VM"
+  value = proxmox_vm_qemu.proxmox_vm.default_ipv4_address
+}
