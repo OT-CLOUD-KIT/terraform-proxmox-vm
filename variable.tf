@@ -210,7 +210,7 @@ variable "enable_agent" {
 variable "onboot" {
   description = "Start VM on boot"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "full_clone" {
