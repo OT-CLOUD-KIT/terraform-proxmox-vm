@@ -4,7 +4,7 @@ resource "proxmox_vm_qemu" "proxmox_vm" {
   vmid        = var.vm_id
   clone       = var.ami
   full_clone  = var.full_clone
-  scsihw      = var.scsi_hw
+#  scsihw      = var.scsi_hw
   onboot      = var.onboot
 
   cpu {
