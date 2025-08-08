@@ -15,21 +15,21 @@ resource "proxmox_vm_qemu" "proxmox_vm" {
   agent     = 1
   skip_ipv6 = true
 
-  disk {
-    slot     = "scsi0"
-    type     = "disk"
-    storage  = "local"
-    size     = var.disk_size
-    format   = "qcow2"
-    iothread = true
-  }
+  # disk {
+  #   slot     = "scsi0"
+  #   type     = "disk"
+  #   storage  = "local"
+  #   size     = var.disk_size
+  #   format   = "qcow2"
+  #   iothread = true
+  # }
 
-  network {
-    id       = 0
-    model    = "virtio"
-    firewall = true
-    bridge   = "vmbr0"
-  }
+  # network {
+  #   id       = 0
+  #   model    = "virtio"
+  #   firewall = true
+  #   bridge   = "vmbr0"
+  # }
 
   tags = local.tags
 }
