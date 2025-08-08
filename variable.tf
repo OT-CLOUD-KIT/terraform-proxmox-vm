@@ -87,7 +87,7 @@ variable "operating_system" {
 variable "target_node" {
   description = "Target Proxmox node"
   type        = string
-  default     = "op-srv-01"
+  default     = "hercules"
   validation {
     condition     = length(var.target_node) > 0
     error_message = "Target node must not be empty."
