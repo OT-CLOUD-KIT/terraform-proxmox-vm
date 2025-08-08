@@ -260,22 +260,3 @@ variable "create_record_mapping" {
   type    = bool
   default = false
 }
-
-variable "zone_id" {
-  description = "Name of private hosted zone id"
-  type        = string
-}
-
-variable "rout53_record_type" {
-  type = string
-}
-
-variable "ttl" {
-  description = "Time to live"
-  type        = string
-}
-
-variable "dns_map" {
-  description = "Map of domain → list of IPs"
-  type        = map(list(string))
-}
