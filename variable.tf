@@ -255,8 +255,3 @@ variable "network_bridge" {
     error_message = "NIC bridge must not be empty."
   }
 }
-
-variable "create_record_mapping" {
-  type    = bool
-  default = false
-}
