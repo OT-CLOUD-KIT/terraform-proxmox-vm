@@ -77,7 +77,7 @@ variable "lifetime" {
 variable "target_node" {
   description = "Target Proxmox node where the VM will be provisioned"
   type        = string
-  default     = "op-srv-01"
+  default     = "hanuman"
 }
 
 variable "vm_id" {
