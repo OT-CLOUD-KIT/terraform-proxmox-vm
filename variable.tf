@@ -241,7 +241,7 @@ variable "network_model" {
 }
 
 variable "network_firewall" {
-  description = "Enable firewall"
+  description = "Enable firewall" 
   type        = bool
   default     = true
 }
