@@ -11,7 +11,7 @@ variable "environment" {
 variable "location" {
   description = "Location (must be one of: hercules, ashwathama, hanuman)"
   type        = string
-  default     = "ashwathama"
+  default     = "hercules"
   validation {
     condition     = contains(["hercules", "ashwathama", "hanuman"], var.location)
     error_message = "Invalid location. Allowed values are: hercules, ashwathama, hanuman."
@@ -47,13 +47,12 @@ variable "vertical" {
 variable "owner" {
   description = "Sanitized owner name"
   type        = string
-  default     = "mail.opstree.com"
+  default     = "mail-opstree-com"
   validation {
-    condition     = can(regex("^[a-zA-Z0-9._-]+$", var.owner))
-    error_message = "Invalid owner. Use only letters, numbers, hyphens (-), underscores (_), or dots (.)."
+    condition     = can(regex("^[a-zA-Z0-9_-]+$", var.owner))
+    error_message = "Invalid owner. Use only letters, numbers, hyphens, or underscores."
   }
 }
-
 
 variable "availability" {
   description = "Availability type"
@@ -88,7 +87,7 @@ variable "operating_system" {
 variable "target_node" {
   description = "Target Proxmox node"
   type        = string
-  default     = "hanuman"
+  default     = "op-srv-01"
   validation {
     condition     = length(var.target_node) > 0
     error_message = "Target node must not be empty."
@@ -216,7 +215,7 @@ variable "onboot" {
 variable "full_clone" {
   description = "Full clone option"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "skip_ip" {
@@ -255,4 +254,28 @@ variable "network_bridge" {
     condition     = length(var.network_bridge) > 0
     error_message = "NIC bridge must not be empty."
   }
+}
+
+variable "create_record_mapping" {
+  type    = bool
+  default = false
+}
+
+variable "zone_id" {
+  description = "Name of private hosted zone id"
+  type        = string
+}
+
+variable "rout53_record_type" {
+  type = string
+}
+
+variable "ttl" {
+  description = "Time to live"
+  type        = string
+}
+
+variable "dns_map" {
+  description = "Map of domain → list of IPs"
+  type        = map(list(string))
 }
