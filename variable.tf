@@ -1,4 +1,3 @@
-# Environment-level metadata
 variable "environment" {
   description = "Environment (must be one of: dev, qa, prod)"
   type        = string
@@ -30,9 +29,9 @@ variable "role" {
 }
 
 variable "identifier" {
-  description = "Application identifier (allowed: build-agent, control-plane, deploy-agent, docs, ems, incident, jenkins, sonarqube, k8s, openops, orchestrator, tunneliq, uniteconpro)"
+  description = "Application identifier"
   type        = string
-  default     = "build-agent"
+  default     = "uniteconpro"
 }
 
 variable "vertical" {
@@ -55,6 +54,7 @@ variable "owner" {
   }
 }
 
+
 variable "availability" {
   description = "Availability type"
   type        = string
@@ -74,14 +74,29 @@ variable "lifetime" {
     error_message = "Lifetime must be a non-negative number."
   }
 }
+
+variable "operating_system" {
+  description = "Operating system"
+  type        = string
+  default     = "ubuntu-24"
+  validation {
+    condition     = contains(["ubuntu-24", "ubuntu-20"], var.operating_system)
+    error_message = "Operating system must be either 'ubuntu-24' or 'ubuntu-20'."
+  }
+}
+
 variable "target_node" {
-  description = "Target Proxmox node where the VM will be provisioned"
+  description = "Target Proxmox node"
   type        = string
   default     = "hanuman"
+  validation {
+    condition     = length(var.target_node) > 0
+    error_message = "Target node must not be empty."
+  }
 }
 
 variable "vm_id" {
-  description = "Unique VM ID"
+  description = "VM ID"
   type        = number
   default     = 301
   validation {
@@ -90,18 +105,8 @@ variable "vm_id" {
   }
 }
 
-variable "ami" {
-  description = "Name of the VM template to clone"
-  type        = string
-  default     = "ubuntu-24"
-  validation {
-    condition     = contains(["ubuntu-24", "ubuntu-22.04", "ubuntu-20", "centos-9"], var.ami)
-    error_message = "AMI must be one of: ubuntu-24, ubuntu-22.04, ubuntu-20, centos-9."
-  }
-}
-
 variable "cpu_core" {
-  description = "Number of CPU cores to assign to the VM"
+  description = "CPU cores"
   type        = number
   default     = 2
   validation {
@@ -111,7 +116,7 @@ variable "cpu_core" {
 }
 
 variable "memory_size" {
-  description = "Amount of memory to assign to the VM in MB"
+  description = "Memory in MB"
   type        = number
   default     = 2048
   validation {
@@ -120,18 +125,72 @@ variable "memory_size" {
   }
 }
 
+variable "ami" {
+  description = "Template to clone from"
+  type        = string
+  default     = "ubuntu-24"
+  validation {
+    condition     = contains(["ubuntu-24", "centos-9", "ubuntu-20", "ubuntu-22.04"], var.ami)
+    error_message = "AMI must be one of: ubuntu-24, ubuntu-20, ubuntu-22.04, centos-9."
+  }
+}
+
+variable "scsi_hw" {
+  description = "SCSI hardware type"
+  type        = string
+  default     = "virtio-scsi-single"
+  validation {
+    condition     = contains(["virtio-scsi-single", "lsi", "scsi-hw"], var.scsi_hw)
+    error_message = "SCSI hardware must be one of: virtio-scsi-single, lsi, scsi-hw."
+  }
+}
+
+variable "disk_slot" {
+  description = "Disk slot"
+  type        = string
+  default     = "scsi0"
+}
+
+variable "disk_type" {
+  description = "Disk type"
+  type        = string
+  default     = "disk"
+}
+
 variable "disk_size" {
-  description = "Size of the VM disk (e.g., 30G, 1024M)"
+  description = "Disk size"
   type        = string
   default     = "30G"
   validation {
     condition     = can(regex("^\\d+[GM]$", var.disk_size))
-    error_message = "Disk size must be specified like '30G' or '1024M'."
+    error_message = "Disk size must be like '30G' or '1024M'."
   }
 }
 
+variable "storage" {
+  description = "Storage pool name"
+  type        = string
+  default     = "local"
+  validation {
+    condition     = length(var.storage) > 0
+    error_message = "Storage must not be empty."
+  }
+}
+
+variable "disk_format" {
+  description = "Disk format"
+  type        = string
+  default     = "qcow2"
+}
+
+variable "disk_iothread" {
+  description = "Enable IO thread"
+  type        = bool
+  default     = true
+}
+
 variable "tags" {
-  description = "Tags to apply to the VM"
+  description = "Semicolon-separated tags"
   type        = string
   default     = "dev;ashwathama;app;uniteconpro;coe;mail-opstree-com;standard;30;ubuntu-24"
 }
@@ -140,4 +199,60 @@ variable "extra_tags" {
   description = "Extra tags"
   type        = string
   default     = "deault-machine"
+}
+
+variable "enable_agent" {
+  description = "Enable QEMU guest agent"
+  type        = number
+  default     = 1
+}
+
+variable "onboot" {
+  description = "Start VM on boot"
+  type        = bool
+  default     = true
+}
+
+variable "full_clone" {
+  description = "Full clone option"
+  type        = bool
+  default     = false
+}
+
+variable "skip_ip" {
+  description = "Skip IPv6 config"
+  type        = bool
+  default     = true
+}
+
+variable "network_id" {
+  description = "Network ID"
+  type        = number
+  default     = 0
+}
+
+variable "network_model" {
+  description = "NIC model"
+  type        = string
+  default     = "virtio"
+  validation {
+    condition     = contains(["virtio", "e1000", "rtl8139"], var.network_model)
+    error_message = "NIC model must be one of: virtio, e1000, rtl8139."
+  }
+}
+
+variable "network_firewall" {
+  description = "Enable firewall"
+  type        = bool
+  default     = true
+}
+
+variable "network_bridge" {
+  description = "NIC bridge"
+  type        = string
+  default     = "vmbr0"
+  validation {
+    condition     = length(var.network_bridge) > 0
+    error_message = "NIC bridge must not be empty."
+  }
 }
