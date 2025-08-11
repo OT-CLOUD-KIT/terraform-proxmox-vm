@@ -24,6 +24,13 @@ resource "proxmox_vm_qemu" "proxmox_vm" {
     iothread = var.disk_iothread
   }
 
+disk {
+  slot    = "ide2"
+  type    = "cdrom"
+  storage = "local"
+ 
+}
+
   network {
     id       = var.network_id
     model    = var.network_model
