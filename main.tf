@@ -15,21 +15,21 @@ resource "proxmox_vm_qemu" "proxmox_vm" {
   agent      = 1
   skip_ipv6  = var.skip_ip
 
-  # disk {
-  #   slot     = var.disk_slot
-  #   type     = var.disk_type
-  #   storage  = var.storage
-  #   size     = var.disk_size
-  #   format   = var.disk_format
-  #   iothread = var.disk_iothread
-  # }
+  
+  disk {
+    slot     = var.disk_slot
+    type     = var.disk_type
+    storage  = var.storage
+    size     = var.disk_size
+    iothread = var.disk_iothread
+  }
 
-  # network {
-  #   id       = var.network_id
-  #   model    = var.network_model
-  #   firewall = var.network_firewall
-  #   bridge   = var.network_bridge
-  # }
+  network {
+    id       = var.network_id
+    model    = var.network_model
+    firewall = var.network_firewall
+    bridge   = var.network_bridge
+  }
 
   tags = local.tags
 
