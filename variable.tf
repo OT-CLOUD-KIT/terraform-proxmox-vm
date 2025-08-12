@@ -11,7 +11,7 @@ variable "environment" {
 variable "location" {
   description = "Location (must be one of: hercules, ashwathama, hanuman)"
   type        = string
-  default     = "hercules"
+  default     = "ashwathama"
   validation {
     condition     = contains(["hercules", "ashwathama", "hanuman"], var.location)
     error_message = "Invalid location. Allowed values are: hercules, ashwathama, hanuman."
