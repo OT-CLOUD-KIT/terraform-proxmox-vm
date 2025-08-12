@@ -24,7 +24,7 @@ variable "role" {
   default     = "app"
   validation {
     condition     = contains(["app", "db", "mw", "k8s"], var.role)
-    error_message = "Invalid role. Allowed values are: app, db, mw."
+    error_message = "Invalid role. Allowed values are: app, db, mw, k8s."
   }
 }
 
@@ -39,7 +39,7 @@ variable "vertical" {
   type        = string
   default     = "coe"
   validation {
-    condition     = contains(["bp", "coe", "common", "cost", "olly", "rapple", "snaatak"], var.vertical)
+    condition     = contains(["bp", "coe", "common", "cost", "o11y", "rapple", "snaatak"], var.vertical)
     error_message = "Invalid vertical."
   }
 }
