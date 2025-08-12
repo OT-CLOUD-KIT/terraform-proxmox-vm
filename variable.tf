@@ -19,12 +19,12 @@ variable "location" {
 }
 
 variable "role" {
-  description = "Role of the VM (allowed: app, db, mw, k8s)"
+  description = "Role of the VM (allowed: app, db, mw)"
   type        = string
   default     = "app"
   validation {
     condition     = contains(["app", "db", "mw", "k8s"], var.role)
-    error_message = "Invalid role. Allowed values are: app, db, mw, k8s."
+    error_message = "Invalid role. Allowed values are: app, db, mw."
   }
 }
 
