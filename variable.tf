@@ -39,7 +39,7 @@ variable "vertical" {
   type        = string
   default     = "coe"
   validation {
-    condition     = contains(["bp", "coe", "common", "cost", "o11y", "rapple", "snaatak"], var.vertical)
+    condition     = contains(["bp", "coe", "common", "cost", "o11y", "rapple", "snaatak", "aiops"], var.vertical)
     error_message = "Invalid vertical."
   }
 }
