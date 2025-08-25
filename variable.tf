@@ -256,3 +256,21 @@ variable "network_bridge" {
     error_message = "NIC bridge must not be empty."
   }
 }
+variable "vm_state" {
+  description = "VM action to perform (start or stop)"
+  type        = string
+  default     = "running"
+validation {
+    condition     = contains(["running", "stopped"], var.vm_state)
+    error_message = "vm_state must be either 'running' or 'stopped'."
+  }
+}
+variable "vm_action" {
+  description = "Do you want to start or stop the VM?"
+  type        = string
+
+  validation {
+    condition     = contains(["start", "stop"], var.vm_action)
+    error_message = "vm_action must be either 'start' or 'stop'."
+  }
+}
