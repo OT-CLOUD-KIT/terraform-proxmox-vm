@@ -6,7 +6,8 @@ resource "proxmox_vm_qemu" "proxmox_vm" {
   full_clone  = var.full_clone
   scsihw      = var.scsi_hw
   onboot      = var.onboot
-
+  vm_state = var.vm_state
+  
   cpu {
     cores = var.cpu_core
   }
@@ -32,4 +33,5 @@ resource "proxmox_vm_qemu" "proxmox_vm" {
   }
 
   tags = local.tags
+
 }
