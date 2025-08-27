@@ -67,7 +67,7 @@ variable "availability" {
 variable "lifetime" {
   description = "VM lifetime in days"
   type        = number
-  default     = 30
+  default     = 0
   validation {
     condition     = var.lifetime >= 0
     error_message = "Lifetime must be a non-negative number."
@@ -117,7 +117,7 @@ variable "cpu_core" {
 variable "memory_size" {
   description = "Memory in MB"
   type        = number
-  default     = 2048
+  default     = 4096
   validation {
     condition     = var.memory_size >= 1024 && var.memory_size <= 16384
     error_message = "Memory size must be between 1024 and 16384 MB."
