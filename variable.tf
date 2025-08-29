@@ -264,12 +264,13 @@ validation {
     error_message = "vm_state must be either 'running' or 'stopped'."
   }
 }
-variable "vm_action" {
-  description = "Do you want to start or stop the VM?"
-  type        = string
 
-  validation {
-    condition     = contains(["start", "stop"], var.vm_action)
-    error_message = "vm_action must be either 'start' or 'stop'."
-  }
-}
+#   variable "vm_action" {
+#   description = "Do you want to start or stop the VM?"
+#   type        = string
+
+#   validation {
+#     condition     = contains(["start", "stop"], var.vm_action)
+#     error_message = "vm_action must be either 'start' or 'stop'."
+#   }
+# }
