@@ -177,12 +177,11 @@ variable "storage" {
   }
 }
 
-   variable "disk_format" {
-   description = "Disk format"
-   type        = string
-   default     = "qcow2"
-}
-
+   #   variable "disk_format" {
+#   description = "Disk format"
+#   type        = string
+#   default     = "qcow2"
+# }
 variable "disk_iothread" {
   description = "Enable IO thread"
   type        = bool
