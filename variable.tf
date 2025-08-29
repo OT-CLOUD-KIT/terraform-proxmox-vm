@@ -177,10 +177,19 @@ variable "storage" {
   }
 }
 
+#   variable "disk_format" {
+#   description = "Disk format"
+#   type        = string
+#   default     = "qcow2"
+# }
 variable "disk_format" {
   description = "Disk format"
   type        = string
-  default     = "qcow2"
+  default     = "raw"
+  validation {
+    condition     = contains(["raw", "qcow2"], var.disk_format)
+    error_message = "Disk format must be either 'raw' or 'qcow2'."
+  }
 }
 
 variable "disk_iothread" {
