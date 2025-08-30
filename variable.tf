@@ -169,7 +169,7 @@ variable "disk_size" {
 variable "storage" {
   description = "Storage pool name"
   type        = string
-  default     = "local"
+  default     = "local-lvm"
   validation {
     condition     = length(var.storage) > 0
     error_message = "Storage must not be empty."
