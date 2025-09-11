@@ -216,7 +216,7 @@ variable "onboot" {
 variable "full_clone" {
   description = "Full clone option"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "skip_ip" {
