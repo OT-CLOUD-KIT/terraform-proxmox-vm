@@ -160,10 +160,10 @@ variable "disk_type" {
 variable "disk_size" {
   description = "Disk size"
   type        = string
-  default     = "30G"
+  default     = "60G"
   validation {
     condition     = can(regex("^\\d+[GM]$", var.disk_size))
-    error_message = "Disk size must be like '30G' or '1024M'."
+    error_message = "Disk size must be like '60G' or '1024M'."
   }
 }
 
