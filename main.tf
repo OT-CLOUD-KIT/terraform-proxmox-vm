@@ -1,9 +1,12 @@
 resource "proxmox_vm_qemu" "proxmox_vm" {
   name        = local.vm_name
-  target_node = var.target_node
+
+  # Conditional target node
+  target_node = var.location == "ashwathama" ? "op-srv-01" : var.location
+
   vmid        = var.vm_id
   clone       = var.ami
-  full_clone  = var.full_clone
+  full_clone  = true
   scsihw      = var.scsi_hw
   onboot      = var.onboot
 
@@ -12,16 +15,23 @@ resource "proxmox_vm_qemu" "proxmox_vm" {
   }
 
   memory     = var.memory_size
-  agent      = var.enable_agent
+  agent      = 1
   skip_ipv6  = var.skip_ip
 
+  # Primary disk
   disk {
     slot     = var.disk_slot
     type     = var.disk_type
-    storage  = var.storage
+    storage  = var.location == "ashwathama" ? "local" : "local-lvm"
     size     = var.disk_size
-    format   = var.disk_format
     iothread = var.disk_iothread
+  }
+
+  # CDROM disk
+  disk {
+    slot    = "ide2"
+    type    = "cdrom"
+    storage = "local"
   }
 
   network {
