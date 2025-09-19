@@ -39,7 +39,7 @@ variable "vertical" {
   type        = string
   default     = "coe"
   validation {
-    condition     = contains(["bp", "coe", "common", "cost", "o11y", "rapple", "snaatak", "opstree"], var.vertical)
+    condition     = contains(["bp", "coe", "common", "cost", "o11y", "rapple", "snaatak", "aiops"], var.vertical)
     error_message = "Invalid vertical."
   }
 }
@@ -47,13 +47,12 @@ variable "vertical" {
 variable "owner" {
   description = "Sanitized owner name"
   type        = string
-  default     = "mail.opstree.com"
+  default     = "mail-opstree-com"
   validation {
     condition     = can(regex("^[a-zA-Z0-9._-]+$", var.owner))
-    error_message = "Invalid owner. Use only letters, numbers, hyphens (-), underscores (_), or dots (.)."
+    error_message = "Invalid owner. Use only letters, numbers, hyphens, or underscores."
   }
 }
-
 
 variable "availability" {
   description = "Availability type"
@@ -68,7 +67,7 @@ variable "availability" {
 variable "lifetime" {
   description = "VM lifetime in days"
   type        = number
-  default     = 30
+  default     = 0
   validation {
     condition     = var.lifetime >= 0
     error_message = "Lifetime must be a non-negative number."
@@ -80,7 +79,7 @@ variable "operating_system" {
   type        = string
   default     = "ubuntu-24"
   validation {
-    condition     = contains(["ubuntu-24", "ubuntu-20"], var.operating_system)
+    condition     = contains(["ubuntu-24", "ubuntu-20, ot-golden-image, ot-coe-image"], var.operating_system)
     error_message = "Operating system must be either 'ubuntu-24' or 'ubuntu-20'."
   }
 }
@@ -88,7 +87,7 @@ variable "operating_system" {
 variable "target_node" {
   description = "Target Proxmox node"
   type        = string
-  default     = "op-srv-01"
+  default     = "hercules"  
   validation {
     condition     = length(var.target_node) > 0
     error_message = "Target node must not be empty."
@@ -98,11 +97,7 @@ variable "target_node" {
 variable "vm_id" {
   description = "VM ID"
   type        = number
-  default     = 301
-  validation {
-    condition     = var.vm_id > 100 && var.vm_id < 9999
-    error_message = "VM ID must be between 101 and 9998."
-  }
+  default     = 0
 }
 
 variable "cpu_core" {
@@ -118,7 +113,7 @@ variable "cpu_core" {
 variable "memory_size" {
   description = "Memory in MB"
   type        = number
-  default     = 2048
+  default     = 4096
   validation {
     condition     = var.memory_size >= 1024 && var.memory_size <= 16384
     error_message = "Memory size must be between 1024 and 16384 MB."
@@ -213,12 +208,6 @@ variable "onboot" {
   default     = true
 }
 
-variable "full_clone" {
-  description = "Full clone option"
-  type        = bool
-  default     = true
-}
-
 variable "skip_ip" {
   description = "Skip IPv6 config"
   type        = bool
@@ -242,7 +231,7 @@ variable "network_model" {
 }
 
 variable "network_firewall" {
-  description = "Enable firewall"
+  description = "Enable firewall" 
   type        = bool
   default     = true
 }
