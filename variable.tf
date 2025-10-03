@@ -98,11 +98,7 @@ variable "target_node" {
 variable "vm_id" {
   description = "VM ID"
   type        = number
-  default     = 301
-  validation {
-    condition     = var.vm_id > 100 && var.vm_id < 9999
-    error_message = "VM ID must be between 101 and 9998."
-  }
+  default     = 0
 }
 
 variable "cpu_core" {
