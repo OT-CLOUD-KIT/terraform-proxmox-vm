@@ -80,8 +80,8 @@ variable "operating_system" {
   type        = string
   default     = "ubuntu-24"
   validation {
-    condition     = contains(["ubuntu-24", "ubuntu-20"], var.operating_system)
-    error_message = "Operating system must be either 'ubuntu-24' or 'ubuntu-20'."
+    condition     = contains(["ubuntu-24", "ubuntu-20", "amazon-linux"], var.operating_system)
+    error_message = "Operating system must be either 'ubuntu-24', 'ubuntu-20', or 'amazon-linux'."
   }
 }
 
