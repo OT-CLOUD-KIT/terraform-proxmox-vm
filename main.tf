@@ -1,35 +1,26 @@
-resource "proxmox_vm_qemu" "proxmox_vm" {
-  name        = local.vm_name
-  target_node = var.target_node
-  vmid        = var.vm_id
-  clone       = var.ami
-  full_clone  = var.full_clone
-  scsihw      = var.scsi_hw
-  onboot      = var.onboot
+# Fetch all Harbor projects
+data "harbor_projects" "all_projects" {}
 
-  cpu {
-    cores = var.cpu_core
+# Apply retention policy to projects
+resource "harbor_retention_policy" "global_policy" {
+
+  for_each = {
+    for p in data.harbor_projects.all_projects.projects : p.name => p
+    if p.name != "library"
   }
 
-  memory     = var.memory_size
-  agent      = var.enable_agent
-  skip_ipv6  = var.skip_ip
+  scope = each.value.project_id
 
-  disk {
-    slot     = var.disk_slot
-    type     = var.disk_type
-    storage  = var.storage
-    size     = var.disk_size
-    format   = var.disk_format
-    iothread = var.disk_iothread
+  schedule = var.schedule
+
+  rule {
+
+    most_recently_pushed = var.keep_latest_artifacts
+
+    repo_matching = "**"
+
+    tag_matching = "**"
+
+    disabled = false
   }
-
-  network {
-    id       = var.network_id
-    model    = var.network_model
-    firewall = var.network_firewall
-    bridge   = var.network_bridge
-  }
-
-  tags = local.tags
 }

@@ -1,12 +1,14 @@
 terraform {
   required_providers {
-    proxmox = {
-      source  = "Telmate/proxmox"
-      version = "3.0.2-rc01"
+    harbor = {
+      source  = "goharbor/harbor"
+      version = "3.10.16"
     }
   }
 }
 
-provider "proxmox" {
-  pm_tls_insecure = true
+provider "harbor" {
+  url      = var.harbor_url
+  username = var.harbor_username
+  password = var.harbor_password
 }
