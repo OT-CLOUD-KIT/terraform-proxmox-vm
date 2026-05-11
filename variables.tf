@@ -18,7 +18,7 @@ variable "keep_latest_artifacts" {
 
 variable "schedule" {
   type    = string
-  default = "0 0 0 * * *"
+  default = "0 30 4 * * 0"
 }
 
 variable "excluded_projects" {
