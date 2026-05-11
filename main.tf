@@ -1,12 +1,21 @@
 # Fetch all Harbor projects
 data "harbor_projects" "all_projects" {}
 
-# Apply retention policy to projects
+# Apply retention policy dynamically
 resource "harbor_retention_policy" "global_policy" {
 
   for_each = {
     for p in data.harbor_projects.all_projects.projects : p.name => p
-    if p.name != "library"
+
+    if (
+      !contains(var.excluded_projects, p.name)
+      &&
+      (
+        length(var.included_projects) == 0
+        ||
+        contains(var.included_projects, p.name)
+      )
+    )
   }
 
   scope = each.value.project_id
